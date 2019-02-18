@@ -61,6 +61,8 @@ UKF::UKF() {
   n_aug = 7;
   // define spreading parameter
   lambda = 3 - n_aug;
+
+  is_initialized_ = false;
 }
 
 UKF::~UKF() {}
@@ -71,6 +73,34 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
    * measurements.
    */
   if (!is_initialized_) {
+
+    time_us_ = meas_package.timestamp_；
+
+    x_ <<  5.7441,
+           1.3800,
+           2.2049,
+           0.5015,
+           0.3528;
+
+    P_ <<    0.0043,   -0.0013,    0.0030,   -0.0022,   -0.0020,
+            -0.0013,    0.0077,    0.0011,    0.0071,    0.0060,
+             0.0030,    0.0011,    0.0054,    0.0007,    0.0008,
+            -0.0022,    0.0071,    0.0007,    0.0098,    0.0100,
+            -0.0020,    0.0060,    0.0008,    0.0100,    0.0123;
+
+    if (meas_package.sensor_type_ == MeasurementPackage::RADAR){
+      float ro = meas_package.raw_measurements_(0);
+      float phi = meas_package.raw_measurements_(1);
+      // float ro_dot = meas_package.raw_measurements_(2);
+      x_(0) = ro * cos(phi)
+      x_(1) = ro * sin(phi)
+    }
+
+    if (meas_package.sensor_type_ == MeasurementPackage::LASER){
+      x_(0) = meas_package.raw_measurements_(0)
+      x_(1) = meas_package.raw_measurements_(1)
+    }
+      is_initialized_ = true;
 
   }
 
@@ -283,7 +313,7 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   // create example matrix with predicted sigma points in state space
   MatrixXd Xsig_pred = MatrixXd(n_x, 2 * n_aug + 1);
 
-  // create example vector for incoming radar measurement
+  // create example vector for incoming laser measurement
   VectorXd z = meas_package.raw_measurements_;
   // create matrix for cross correlation Tc
   MatrixXd Tc = MatrixXd(n_x, n_z);
