@@ -28,6 +28,10 @@ class UKF {
    * @param delta_t Time between k and k+1 in s
    */
   void Prediction(double delta_t);
+  void SigmaPoints();
+  void AugmentedSigmaPoints();
+  void SigmaPointPrediction();
+  void PredictMeanAndCovariance();
 
   /**
    * Updates the state and the state covariance matrix using a laser measurement
