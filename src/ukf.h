@@ -31,7 +31,7 @@ class UKF {
   void SigmaPoints();
   void AugmentedSigmaPoints();
   void SigmaPointPrediction();
-  void PredictMeanAndCovariance();
+  void MeanAndCovariance();
 
   /**
    * Updates the state and the state covariance matrix using a laser measurement
@@ -99,6 +99,9 @@ class UKF {
 
   // Sigma point spreading parameter
   double lambda_;
+
+  Eigen::MatrixXd Xsig_aug;
+  float delta_t;
 };
 
 #endif  // UKF_H
