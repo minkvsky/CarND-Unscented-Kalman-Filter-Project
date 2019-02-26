@@ -38,12 +38,14 @@ class UKF {
    * @param meas_package The measurement at k+1
    */
   void UpdateLidar(MeasurementPackage meas_package);
+  void Lidar_S();
 
   /**
    * Updates the state and the state covariance matrix using a radar measurement
    * @param meas_package The measurement at k+1
    */
   void UpdateRadar(MeasurementPackage meas_package);
+  void Radar_S();
 
 
   // initially set to false, set to true in first call of ProcessMeasurement
@@ -102,6 +104,13 @@ class UKF {
 
   Eigen::MatrixXd Xsig_aug;
   float delta_t;
+
+  // create matrix for sigma points in measurement space
+  Eigen::MatrixXd Zsig;
+  // mean predicted measurement
+  Eigen::VectorXd z_pred;
+  // measurement covariance matrix S
+  Eigen::MatrixXd S;
 };
 
 #endif  // UKF_H
