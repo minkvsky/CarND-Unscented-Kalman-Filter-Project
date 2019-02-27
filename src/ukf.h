@@ -95,6 +95,7 @@ class UKF {
 
   // State dimension
   int n_x_;
+  int n_z;
 
   // Augmented state dimension
   int n_aug_;
